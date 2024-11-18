@@ -23,6 +23,7 @@ init_workspace() {
   if [ ! -d build ] || [ ! -d devel ]; then
     info_log "Initializing the catkin workspace."
     source /opt/ros/noetic/setup.bash
+    catkin config --extend /opt/dependency_workspace/install/
     catkin build
   else
     info_log "The catkin workspace is already initialized."

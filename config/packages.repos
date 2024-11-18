@@ -1,20 +1,7 @@
 # Ensure GitLab repositories use the Git protocol, and GitHub repositories use HTTPS.
 
 repositories:
-  cloud_proc:
+  robot_rodeo_gym:
     type: git
-    url: https://github.com/ctu-vras/cloud_proc.git
+    url: https://github.com/ctu-vras/robot-rodeo-gym.git
     version: master
-  naex:
-    type: git
-    url: https://github.com/vras-robotour/naex.git
-    version: master
-  image_segmentation:
-    type: git
-    url: https://github.com/vras-robotour/image_segmentation.git
-    version: main
-  cras_system_monitor:
-    type: git
-    url: git@gitlab.fel.cvut.cz:cras/subt/common/cras_system_monitor.git
-    version: master
-  

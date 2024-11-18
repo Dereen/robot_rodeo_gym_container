@@ -9,7 +9,7 @@ SCRIPTS_DIR="${PROJECT_DIR}/scripts"
 # TODO: Change the name of this function to match the name of your project
 # | | | | | | 
 # v v v v v v
-cras_project() {
+robot_rodeo_gym() {
     local option="$1"
     shift
 
@@ -57,7 +57,7 @@ _cras_project_autocomplete() {
 }
 
 # Register the autocomplete function for cras_project
-complete -F _cras_project_autocomplete cras_project
+complete -F _cras_project_autocomplete robot_rodeo_gym
 
 
 

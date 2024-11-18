@@ -19,7 +19,7 @@ import_dependencies() {
 
 main() {
     # Create the directories
-    mkdir -p ${DEPENDENCY_DIR}
+    mkdir -p ${DEPENDENCY_WORKSPACE_SRC}
     mkdir -p ${TMP_WORKSPACE_SRC}
 
     # Source ROS
@@ -32,7 +32,7 @@ main() {
     # Clone dependencies until the number of dependencies is the same as the previous iteration 
     num_dependencies_prev=0
     num_dependencies=$(import_dependencies ${TMP_WORKSPACE_SRC})
-    while [ num_dependencies -ne num_dependencies_prev ]; do
+    while (( num_dependencies!= num_dependencies_prev )); do
         num_dependencies_prev=${num_dependencies}
         num_dependencies=$(import_dependencies ${DEPENDENCY_WORKSPACE_SRC})
     done

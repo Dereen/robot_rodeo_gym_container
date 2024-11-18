@@ -19,6 +19,9 @@ FROM: ghcr.io/sloretz/ros:noetic-simulators-osrf
     {{ SSH_DIR }}/* /root/.ssh/
     build_dependencies.sh /.tmp/
     ../env/sudo /usr/bin/sudo
+    ./setup_gazebo_keys.sh /.tmp/
+    ./install_xow.sh /.tmp/
+    ./fix_gazebo.sh /.tmp/
 
 %environment
     export PATH="/.custom_commands:${PATH}"
@@ -32,12 +35,18 @@ FROM: ghcr.io/sloretz/ros:noetic-simulators-osrf
     PIP_PACKAGES="/.config/packages.pip"
     REPOS_PACKAGES="/.config/packages.repos"
 
+
     # Install apt packages
     apt-get update
+    apt-get install curl -y
     DEBIAN_FRONTEND=noninteractive xargs -a $APT_PACKAGES apt-get install -y
 
     # Install pip packages
     pip3 install -r $PIP_PACKAGES
+
+    bash /.tmp/setup_gazebo_keys.sh
+    bash /.tmp/install_xow.sh
+    bash /.tmp/fix_gazebo.sh
 
     # Make all custom commands executable
     chmod +x /.custom_commands/*

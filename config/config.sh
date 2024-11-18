@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Project name with lowercase letters and no spaces
-IMAGE_NAME="cras_project"
-PROJECT_NAME="CRAS Project"
+IMAGE_NAME="robot_rodeo_gym"
+PROJECT_NAME="Robot Rodeo Gym"
 
 # Remote server variables for storing images
 REMOTE_SERVER="login3.rci.cvut.cz"
-REMOTE_IMAGES_PATH="/mnt/data/vras/data/robotour2024/images"
+REMOTE_IMAGES_PATH="/mnt/data/vras/data/robot_rodeo_gym/images"
 
 # Arguments provided to catkin config
 CATKIN_CONFIG_ARGS="-DPYTHON_EXECUTABLE=/usr/bin/python3 \
@@ -20,7 +20,7 @@ CATKIN_CONFIG_ARGS="-DPYTHON_EXECUTABLE=/usr/bin/python3 \
 export APPTAINERENV_USER="${USER}"
 export APPTAINERENV_DISPLAY="${DISPLAY}"
 export APPTAINERENV_XAUTHORITY="${XAUTHORITY}"
-export APPTAINERENV_PROJECT_NAME=${PROJECT_NAME}
+export APPTAINERENV_PROJECT_NAME="${PROJECT_NAME}"
 
 # -------- End: Environment variables --------
 

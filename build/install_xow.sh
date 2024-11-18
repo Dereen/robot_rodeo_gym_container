@@ -1,0 +1,12 @@
+#!/bin/bash
+
+git clone https://github.com/medusalix/xow
+
+cd xow
+make BUILD=RELEASE
+sudo make install
+
+sudo xow-get-firmware.sh --skip-disclaimer
+
+sudo systemctl enable xow
+sudo systemctl start xow
