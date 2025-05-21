@@ -75,7 +75,6 @@ select_overlay() {
 main() {
     overlay=""             # Default is no overlay mode
     nvidia_gpu=""          # Default is no NVIDIA GPU support
-    download_image=false   # Flag for image download, currently not used
     is_overlay_enabled=false  # Flag to check if overlay mode is enabled
     debug=""
 
@@ -139,20 +138,6 @@ main() {
         error_log "You are already inside an Apptainer container." && exit 1
     fi
 
-    # Check if the specified image file exists
-    debug_log "Checking if the image file ${PINK}${IMAGE_FILE}${RESET} exists."
-    if [ ! -f "$IMAGE_FILE" ]; then
-        warn_log "Image file ${PINK}${IMAGE_FILE}${RESET} does not exist."
-        read_input "Do you want to download the image? [y/N] "
-
-        # If the user agrees to download the image, ask for the username and download it
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            bash "${SCRIPTS_DIR}/transfer_image" download
-        else
-            exit 1  # Exit if the user chooses not to download the image
-        fi
-    fi
-
     # Warn the user if NVIDIA GPU support is not enabled
     debug_log "Checking if NVIDIA GPU support is enabled."
     if [ "$nvidia_gpu" = "" ]; then
@@ -176,7 +161,7 @@ main() {
     fi
 
     debug_log "Running:${BOLD} apptainer exec $nvidia_gpu $OVERLAY_ARG -B \"${MOUNT_PATHS[$HARDWARE_TYPE]}\" -e $IMAGE_FILE \"${SCRIPTS_DIR}/utils/init_workspace.sh\" $debug ${RESET}" 
-    apptainer exec $nvidia_gpu $OVERLAY_ARG -B "${MOUNT_PATHS[$HARDWARE_TYPE]}" -e $IMAGE_FILE "${SCRIPTS_DIR}/utils/init_workspace.sh" $debug
+    apptainer exec $OVERLAY_ARG -B "${MOUNT_PATHS[$HARDWARE_TYPE]}" -e $IMAGE_FILE "${SCRIPTS_DIR}/utils/init_workspace.sh" $debug $nvidia_gpu
 }
 
 # ============= END: Main Script =============

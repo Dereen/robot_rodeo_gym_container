@@ -38,3 +38,8 @@ ros-noetic-realtime-tools
 ros-noetic-robot-body-filter
 ros-noetic-point-cloud2-filters
 ros-noetic-joy
+ros-noetic-roslint
+ros-noetic-point-cloud-transport-plugins
+coinor-libipopt-dev
+libnlopt-cxx-dev
+

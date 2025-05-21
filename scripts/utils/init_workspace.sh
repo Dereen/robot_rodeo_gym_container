@@ -18,8 +18,24 @@ source "$(realpath "$(dirname "${BASH_SOURCE[0]}")")/functions.sh"
 
 # TODO: Change the function
 init_workspace() {
+  info_log "Initializing workspace"
+
   # Check if the catkin workspace is initialized
   cd "${WORKSPACE_DIR}" || exit 1
+
+  echo "${WORKSPACE_DIR}/src"
+	echo "$( ls -A "${WORKSPACE_DIR}/src" )"
+
+  # Check if workspace packges are installed
+  if [ -z "$( ls -A "${WORKSPACE_DIR}/src" )" ]; then
+		info_log "Installing packages"
+    cd "${WORKSPACE_DIR}/src"
+    vcs import < "/.config/packages.repos" 
+ 		cd "${WORKSPACE_DIR}"
+	else
+		info_log "Packages installed"  
+	fi
+
   if [ ! -d build ] || [ ! -d devel ]; then
     info_log "Initializing the catkin workspace."
     source /opt/ros/noetic/setup.bash
@@ -28,24 +44,9 @@ init_workspace() {
   else
     info_log "The catkin workspace is already initialized."
   fi
-}
 
-fetch_packages() {
-  if ! is_online; then
-    warn_log "You do not seem to be online. Not fetching the packages."
-    return
-  fi
-
-  # Update the repositories specified in the packages.repos file
-  cd "${WORKSPACE_DIR}/src" || exit 1
-
-  # Fetch the packages
-  info_log "Fetching the packages..."
-  vcs custom --git --args fetch --all 2>/dev/null
-
-  echo ""
-  info_log "Checking the status of the repositories..."
-  vcs status
+	echo $PWD
+	source ./devel/setup.bash
 }
 
 convert_url() {
@@ -75,40 +76,6 @@ convert_url() {
     fi
 }
 
-update_push_urls() {
-    local base_dir=$1
-
-    # Loop through all subdirectories in the base directory
-    info_log "Updating the push URLs of the repositories in $base_dir..."
-    for dir in "$base_dir"/*/; do
-        if [ -d "$dir/.git" ]; then
-            debug_log ""
-            debug_log "Processing repository: $dir"
-
-            # Get the current pull URL (origin)
-            current_url=$(git -C "$dir" remote get-url origin)
-
-            if [ $? -eq 0 ]; then
-                debug_log "Fetch URL: $current_url."
-
-                # Convert the URL if it's valid
-                new_url=$(convert_url "$current_url")
-
-                if [ $? -eq 0 ]; then
-                    # Set the new URL as the push URL
-                    git -C "$dir" remote set-url --push origin "$new_url"
-                    debug_log "Push URL: $new_url."
-                else
-                    debug_log "Skipping invalid URL in $dir."
-                fi
-            else
-                debug_log "No valid remote 'origin' found for $dir."
-            fi
-        else
-            debug_log "$dir is not a git repository."
-        fi
-    done
-}
 
 main() {
 
@@ -142,18 +109,6 @@ main() {
   # Check if the conda is in ~/.bashrc
   check_anaconda
 
-  # Update the packages
-  echo
-  echo "====================== FETCHING PACKAGES ======================"
-  echo
-
-  fetch_packages
-
-  update_push_urls "${WORKSPACE_DIR}/src"
-
-  echo 
-  info_log "If you want to update the workspace packages, run the ${YELLOW}update_workspace${RESET} command."
-
   echo
   echo "==============================================================="
   echo
@@ -168,7 +123,7 @@ main() {
   info_log "Starting interactive bash"
   debug_log "Starting the interactive bash by running the command: ${BOLD}bash${RESET}"
   
-  bash
+  bash --rcfile "./devel/setup.bash"
 }
 
 main "$@"

@@ -84,6 +84,7 @@ build_image() {
     fi
 }
 
+
 # Function to change ownership and permissions of the image and metadata files
 change_owner_and_rights() {
     debug_log "Changing the owner of the image file and metadata file to the current user"
@@ -149,10 +150,12 @@ main() {
         remove_image_or_create_backup
     fi
 
-    # Build the image, create metadata, and set appropriate ownership and permissions
+    i# Build the image, create metadata, and set appropriate ownership and permissions
     build_image
     create_metadata
     change_owner_and_rights
+    
+		info_log "Build finished"
 }
 
 # ============= END: Main Script =============

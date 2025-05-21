@@ -17,7 +17,7 @@ FROM: ghcr.io/sloretz/ros:noetic-simulators-osrf
     ../config/* /.config/
     ../commands/* /.custom_commands/
     {{ SSH_DIR }}/* /root/.ssh/
-    build_dependencies.sh /.tmp/
+    ./build_dependencies.sh /.tmp/
     ../env/sudo /usr/bin/sudo
     ./setup_gazebo_keys.sh /.tmp/
     ./install_xow.sh /.tmp/
@@ -40,7 +40,7 @@ FROM: ghcr.io/sloretz/ros:noetic-simulators-osrf
     apt-get update
     apt-get install curl -y
     DEBIAN_FRONTEND=noninteractive xargs -a $APT_PACKAGES apt-get install -y
-
+	
     # Install pip packages
     pip3 install -r $PIP_PACKAGES
 

@@ -5,11 +5,6 @@ source "$(realpath "$(dirname "${BASH_SOURCE[0]}")")/../../config/config.sh"
 
 # Type of the local hardware (amd64, jetson, arm64)
 HARDWARE_TYPE="amd64"
-if [ -d "/usr/lib/aarch64-linux-gnu/tegra" ]; then
-	HARDWARE_TYPE="jetson"
-elif [[ "$(uname -m)" = *"aarch"* ]] || [[ "$(uname -m)" = *"arm"* ]]; then
-	HARDWARE_TYPE="arm64"
-fi
 
 # Get the project folder
 PROJECT_DIR=$(realpath "$(dirname "${BASH_SOURCE[0]}")/../..")
